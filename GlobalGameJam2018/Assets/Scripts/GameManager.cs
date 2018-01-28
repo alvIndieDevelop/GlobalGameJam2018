@@ -53,9 +53,9 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		if (peoplesLeft <= 0)
+		if (peoplesLeft <= 0 || curTime <= 0)
 		{
-			//Win
+			//Win losee
 			SceneManager.LoadScene("GUI");
 		}
 	}
