@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
 	
 	//stats
 	public int curHealth = 10;
+	public int maxHealth = 10;
 	public int damage = 5;
 	public bool isZombie = false;
 	
@@ -30,13 +32,17 @@ public class PlayerController : MonoBehaviour
 		AtackPlayer,
 		Run
 	}
-
+	
+	//Audio
+	public AudioClip hurtAudio;
 	
 	
 	//GUI
 	public Image panelHit; //panel para hacer efecto de hit
 	private Color curColorPanelHit; //el color neutral de panel
 	public Color colorHit; //el nuevo color del panel de hit
+
+	public Slider healthBar;
 
 	public AISTATE aiState = AISTATE.Patrol;
 	public float attackRage = 2.5f;
@@ -48,6 +54,7 @@ public class PlayerController : MonoBehaviour
 	private Quaternion _targetRotation;
 	private NavMeshAgent _navMeshAgent;
 	private GameManager _gameManager;
+	private AudioSource _audioSource;
 	
 	
 
@@ -59,6 +66,7 @@ public class PlayerController : MonoBehaviour
 		_rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 		_navMeshAgent = GetComponent<NavMeshAgent>();
 		_gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+		_audioSource = GetComponent<AudioSource>();
 		
 		//AI
 		if (!isZombie)
@@ -66,6 +74,12 @@ public class PlayerController : MonoBehaviour
 			_navMeshAgent.speed = speed;
 			_navMeshAgent.angularSpeed = rotationSpeed;
 			_navMeshAgent.SetDestination(waypoints[Random.Range(0, waypoints.Length)].transform.position);
+		}
+
+		if (this.tag == "Player")
+		{
+			healthBar.maxValue = maxHealth;
+			healthBar.value = curHealth;
 		}
 
 	}
@@ -147,11 +161,18 @@ public class PlayerController : MonoBehaviour
 	//get hit
 	IEnumerator GetHit()
 	{
+		_audioSource.clip = hurtAudio;
+		_audioSource.Play();
 		if (this.isZombie)
 		{
 			panelHit.color = colorHit;
 			yield return new WaitForSeconds(0.2f); //esperamos 0.2 segundos para poner el efecto de hit
 			panelHit.color = curColorPanelHit;
+
+			if (this.tag == "Player")
+			{
+				healthBar.value = curHealth;
+			}
 		}
 		else
 		{
@@ -181,6 +202,7 @@ public class PlayerController : MonoBehaviour
 			if (this.tag == "Player")
 			{
 				//LOOSE
+				SceneManager.LoadScene("GUI");
 			}
 		}
 	}
