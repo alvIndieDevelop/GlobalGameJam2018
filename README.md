@@ -12,10 +12,10 @@ Mechanics:
 The player will move around in all directions, trying to infect other ones. But won't be easy, the people are notify about the virus and they take them warnings, making more harder to infect people fast for you. When you get infect someone, he will imit your move, so, if you forward, he will go forward, etc, etc. Make a strategy, be fast and good luck.
 
 Controls:
-Forward: W
-Back: S
-Right: D
-Left: A
+  Forward: W,
+  Back: S,
+  Right: D,
+  Left: A
 
 Tags:
 #Strategy #Zombie #Arcade #Minigame #transmission
