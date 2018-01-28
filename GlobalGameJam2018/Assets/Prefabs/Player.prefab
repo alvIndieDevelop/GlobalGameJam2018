@@ -800,8 +800,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  runSpeed: 10
   rotationSpeed: 450
+  curHealth: 20
+  damage: 5
   isZombie: 1
+  waypoints: []
+  aiState: 0
+  attackRage: 2.5
 --- !u!135 &135451380414099246
 SphereCollider:
   m_ObjectHideFlags: 1
